@@ -4,6 +4,7 @@ Bản chuẩn hiện tại: **v9** — style v3 (Uber, 3/4 nhìn từ trên xu�
 
 - Figma: [[SDK] Vector Graphics → VNPAY Taxi · Asset v7](https://www.figma.com/design/drYqcpUjIPAWKYZVcZns8k/?node-id=2003-288) — hàng cuối "v9" (node 2045:288–2045:300)
 - File: `assets/icons/v9/` — PNG 512×512, nền trắng (RGB, chưa tách nền)
+- Vector: `assets/icons/v9-svg/` — SVG nền trong suốt, cùng tên file
 - Ảnh xem nhanh: `assets/icons/v9-preview.png`
 
 ![v9 preview](../assets/icons/v9-preview.png)
@@ -35,3 +36,22 @@ Bản chuẩn hiện tại: **v9** — style v3 (Uber, 3/4 nhìn từ trên xu�
 - Đèn trước #6F92DA, đèn hậu #A71D30 — dùng rất ít.
 
 Rule đầy đủ: skill `icon-master` trong repo HST-DS (`.claude/skills/icon-master/SKILL.md`).
+
+## SVG v9 (vector, 12 icon)
+
+`assets/icons/v9-svg/taxi-v9-*.svg` — vector trace từ PNG v9 gốc (`assets/icons/v9/`), cùng tên file. Nền trong suốt, viewBox 1024, hiển thị mặc định 512×512, 35–70 KB/file (đã tối ưu svgo).
+
+- Cách làm: tách nền trắng (flood fill từ biên) → gom màu 20 tông/icon (k-means Lab) → làm mượt biên → trace spline (vtracer). Bóng đổ giữ thành 2–3 mảng xanh xám cạnh gọn.
+- So sánh PNG (2 hàng trên) và SVG (2 hàng dưới): `assets/icons/v9-svg-compare.png`.
+- Hạn chế: gradient dọc trong mặt thành các bậc tông rất mịn; chi tiết rất nhỏ (biển TAXI, nan mâm) đơn giản hơn PNG; viền mờ ngoài cùng của bóng bị cắt gọn.
+- Đưa lên Figma: kéo thả các file .svg vào frame "VNPAY Taxi · Asset v7" → import thành vector chỉnh sửa được.
+
+Bản thử cũ (trace từ ảnh artifact, không thuộc bộ chuẩn): `taxi-v9-finding.svg`, `taxi-v9-vns-anim.svg`, `taxi-v9-finding-anim.svg`.
+
+## Lottie card dịch vụ
+
+`assets/lottie/svc-*.json` — 8 file cho lưới dịch vụ (gs4, gs7, multi, air, for, gslux, sched, vns). Chạy chung lottie-web / lottie-android / lottie-ios / lottie-react-native.
+
+- 60fps, 2 đoạn: `[0,60]` vào màn (phát 1 lần, stagger 60ms giữa các ô) · `[60,110]` hover / nhấn (bắt đầu và kết thúc ở tư thế nghỉ).
+- Theo Motion DS: không lặp, không nảy; Reduce Motion → dừng ở frame 59.
+- Ảnh PNG nhúng base64, tách lớp (xe, người, lịch, đồng hồ, máy bay, vali…); kim đồng hồ là shape.
